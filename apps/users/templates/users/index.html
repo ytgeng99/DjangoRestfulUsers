@@ -1,0 +1,59 @@
+<html>
+    <head>
+        <title>Users</title>
+        <style>
+            body {
+                font-family: arial, sans-serif;
+            }
+            table {
+                border-collapse: collapse;
+                width: 100%;
+            }
+            td, th {
+                border: 1px solid #dddddd;
+                text-align: left;
+                padding: 8px;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Users</h1>
+        <table>
+            <tr>
+                <th>id</th>
+                <th>Full Name</th>
+                <th>Email</th>
+                <th>Created At</th>
+                <th>Actions</th>
+            </tr>
+            {% for user in users %}
+            <tr>
+                <th>{{user.id}}</th>
+                <th>{{user.full_name}}</th>
+                <th>{{user.email}}</th>
+                <th>{{user.created_at}}</th>
+                <th>
+                    <a href="{% url 'users:show' id=user.id %}">Show</a> | 
+                    <a href="{% url 'users:edit' id=user.id %}">Edit</a> | 
+                    <a href="" class="del_btn" value={{user.id}}>Delete</a>
+                </th>
+            </tr>
+            <form action="{% url 'users:destroy' id=user.id %}" method="POST" id="form_destroy_{{user.id}}">
+                {% csrf_token %}
+                <input type="hidden" name="id" value={{user.id}}>
+            </form>
+            {% endfor %}
+        </table>
+        <p><a href="{% url 'users:new' %}">Add a new user</a></p>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script>
+            $('.del_btn').click(function(e) {
+                var id = $(this).attr("value");
+                console.log(id);
+                $('#form_destroy_' + id).submit();
+                e.preventDefault();
+            });
+        </script>
+    </body>
+</html>

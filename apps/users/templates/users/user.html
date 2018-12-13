@@ -1,0 +1,33 @@
+<html>
+    <head>
+        <title>User {{id}}</title>
+        <style>
+            body {
+                font-family: arial, sans-serif;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>User {{id}}</h1>
+        <p>Full Name: {{full_name}}</p>
+        <p>Email: {{email}}</p>
+        <p>Created at: {{created_at}}</p>
+        <p>
+            <a href="{% url 'users:edit' id=id %}">Edit</a> | 
+            <a href="" id="del_btn">Delete</a> | 
+            <a href="{% url 'users:index' %}">Go Back</a>
+            <form action="{% url 'users:destroy' id=id %}" method="POST" id="form_destroy">
+                {% csrf_token %}
+                <input type="hidden" name="id" value={{id}}>
+            </form>
+        </p>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script>
+            $('#del_btn').click(function(e) {
+                $('#form_destroy').submit();
+                e.preventDefault();
+            });
+        </script>
+    </body>
+</html>
